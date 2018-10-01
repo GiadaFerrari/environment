@@ -1,80 +1,74 @@
 //VARIABLE
+//objects
 let shrimp;
-let sand, shrimpRender, shrimpRenderR;
+let jellyfishes = [];
+
+//images
+let sand, shrimpRender, shrimpRenderR, anemone, nemo;
+
+
+//forces
+let hide;
 
 //flowfield var
+/*
 let inc = 0.01
 let scl = 10;
 let cols, rows;
 let zoff = 0;
 let particles = [];
 let flowField = [];
-//CLASSES
-class Shrimp {
-    constructor() {
-        this.location = createVector(width / 2, height / 2);
-        this.velocity = createVector();
-        this.acceleration = createVector();
-        this.topSpeed = 4;
+*/
 
-
-
-    }
-
-    //have shrimp follow the mouse
-    update() {
-        let mouse = createVector(mouseX, mouseY);
-        //store new coordinates in a new vector variable
-        this.acceleration = p5.Vector.sub(mouse, this.location);
-        this.acceleration.setMag(0.4);
-        this.velocity.add(this.acceleration);
-        this.velocity.limit(this.topSpeed);
-        this.location.add(this.velocity);
-
-    }
-
-    render() {
-        let mouse = createVector(mouseX, mouseY);
-
-        if (mouse.x < this.location.x) {
-            console.log("true")
-            image(shrimpRender, this.location.x, height - 80, 100, 60);
-
-        } else {
-
-            image(shrimpRenderR, this.location.x, height - 80, 100, 60);
-        }
-    }
-}
-
-//FUNCTIONS
 function setup() {
     /*  cols = floor(width / scl);
-      rows = floor(height / scl);
-      for (i = 0; i < 500; i++) {
-          particles[i] = new Particle();
-      }
+    rows = floor(height / scl);
+    for (i = 0; i < 500; i++) {
+        particles[i] = new Particle();
+    }
 
-      flowField = new Array(cols * rows);*/
-
+    flowField = new Array(cols * rows);
+*/
     background("#a8feed");
     sand = loadImage("assets/sand.png");
     shrimpRender = loadImage("assets/shrimp.png");
     shrimpRenderR = loadImage("assets/shrimpR.png");
+    nemo = loadImage("assets/nemo.png")
+    anemone = loadImage("assets/anemone.png")
 
     createCanvas(window.innerWidth, window.innerHeight);
+
+    //shrimp
     shrimp = new Shrimp();
+    for (i = 0; i < 5; i++) {
+        jellyfishes[i] = new Nemo(random(width), random(height - 80), random(10, 30));
+
+    }
+
 
 }
 
+
 function draw() {
     background("#a8feed")
-    image(sand, 0, height - 70, width, 70)
+    image(sand, 0, height - 70, width, 70);
 
 
-    //static environment
     shrimp.render();
     shrimp.update();
+
+
+    for (i = 0; i < jellyfishes.length; i++) {
+        jellyfishes[i].update();
+        jellyfishes[i].checkEdges();
+        jellyfishes[i].render();
+
+
+
+    }
+    image(anemone, width - 300, height - 230, 350, 400)
+
+
     /*
         //water texure
         let yoff = 0;
@@ -107,7 +101,17 @@ function draw() {
             }
             yoff += inc;
             zoff -= 0.0009;
-        }*/
+        }
+
+    */
+}
+
+function keyPressed() {
+
+    hide = createVector(0.3, 2);
+    for (i = 0; i < jellyfishes.length; i++) {
+        jellyfishes[i].applyForce(hide);
+    }
 
 
 }
