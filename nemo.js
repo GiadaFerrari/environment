@@ -1,11 +1,11 @@
 class Nemo {
     constructor(x, y, m) {
         this.loc = createVector(x, y);
-        this.vel = createVector(random(), 0, 0 + random());
-        this.acc = createVector(0, 0);
+        this.vel = createVector(0, 0);
+        this.acc = createVector(-1, 0.5);
         this.mass = floor(m);
 
-        this.maxSpeed = 2;
+        this.maxSpeed = 3;
 
     }
 
@@ -34,30 +34,26 @@ class Nemo {
     checkEdges() {
 
         if (this.loc.x > width) {
-            this.loc.x = 0;
+            //this.loc.x = width - 30;
+            this.vel.mult(-1);
 
-        } else if (this.loc.x < 0) {
-            this.vel.x *= -1;
-            this.loc.x = 0;
-
-
+        } else if (this.loc.x < width - 500) {
+            this.vel.x *= -1;            this.loc.x = width - 400;
         }
-        if (this.loc.y > height - 80) {
-            this.loc.y = height - 80;
-            this.vel.y *= -1;
 
-        } else if (this.loc.y < 0) {
-            this.vel.y *= -1;
-            this.loc.y = 0;
+        if (this.loc.y > height - 10) {
+            this.loc.y = height - 10;
+            this.vel.mult(-1);
 
-
+        } else if (this.loc.y < height - 500) {
+            this.vel.mult(-1);
+            this.loc.y = height - 300;
         }
     }
 
     applyForce(force) {
 
         let f = p5.Vector.div(force, this.mass);
-        console.log(f)
         this.acc.add(force);
     }
 

@@ -1,34 +1,20 @@
 //VARIABLE
 //objects
 let shrimp;
-let jellyfishes = [];
+let clownFishes = [];
 
 //images
 let sand, shrimpRender, shrimpRenderR, anemone, nemo;
 
 
 //forces
-let hide;
+let current;
+let anemoneG;
+let xoff = 0.08;
 
-//flowfield var
-/*
-let inc = 0.01
-let scl = 10;
-let cols, rows;
-let zoff = 0;
-let particles = [];
-let flowField = [];
-*/
 
 function setup() {
-    /*  cols = floor(width / scl);
-    rows = floor(height / scl);
-    for (i = 0; i < 500; i++) {
-        particles[i] = new Particle();
-    }
 
-    flowField = new Array(cols * rows);
-*/
     background("#a8feed");
     sand = loadImage("assets/sand.png");
     shrimpRender = loadImage("assets/shrimp.png");
@@ -40,78 +26,45 @@ function setup() {
 
     //shrimp
     shrimp = new Shrimp();
-    for (i = 0; i < 5; i++) {
-        jellyfishes[i] = new Nemo(random(width), random(height - 80), random(10, 30));
+
+
+    for (i = 0; i < 2; i++) {
+        clownFishes[i] = new Nemo(random(width - 500, width), random(height - 500, height), random(10, 30));
 
     }
 
-
 }
 
-
 function draw() {
+
     background("#a8feed")
     image(sand, 0, height - 70, width, 70);
+    fill('#ffffff')
+    rect(width - 500, height - 500, 500, 500);
+    xoff = xoff + 0.02
 
 
     shrimp.render();
     shrimp.update();
-
-
-    for (i = 0; i < jellyfishes.length; i++) {
-        jellyfishes[i].update();
-        jellyfishes[i].checkEdges();
-        jellyfishes[i].render();
-
-
-
-    }
     image(anemone, width - 300, height - 230, 350, 400)
 
 
-    /*
-        //water texure
-        let yoff = 0;
-        for (let i = 0; i < particles.length; i++) {
+    //anemoneG = createVector(noise(xoff + 10), noise(xoff + 20))
 
-            particles[i].follow(flowField);
-            particles[i].edges();
+    for (i = 0; i < clownFishes.length; i++) {
 
-            if (i < particles.length / 2) {
-                particles[i].render(255, 255, 255, 15);
-                console.log("i m white")
-            } else {
-                particles[i].render(255, 255, 255, 15);
-                console.log("i'm blue")
-            }
-            particles[i].update();
-        }
+        let cx = noise(xoff + 20 * 300)
+        let cy = noise(xoff + 10 * 400)
+        current = createVector(noise(xoff + 10 * width), noise(xoff - 20 * height));
 
-        for (let y = 0; y < rows; y++) {
-            let xoff = 0;
-            for (let x = 0; x < cols; x++) {
-                let index = x + y * cols;
-                let angle = noise(xoff, yoff, zoff) * TWO_PI * 4;
-                //change the fromAngle() parameter to change direction
-                let v = p5.Vector.fromAngle(angle);
-                v.setMag(4);
-                flowField[index] = v;
-                xoff += inc;
+        clownFishes[i].update();
+        clownFishes[i].checkEdges();
+        clownFishes[i].render();
+        //  clownFishes[i].applyForce(current);
+        //   clownFishes[i].applyForce(anemoneG);
 
-            }
-            yoff += inc;
-            zoff -= 0.0009;
-        }
 
-    */
-}
-
-function keyPressed() {
-
-    hide = createVector(0.3, 2);
-    for (i = 0; i < jellyfishes.length; i++) {
-        jellyfishes[i].applyForce(hide);
     }
-
+    image(anemone, width - 200, height - 330, 350, 400)
 
 }
