@@ -12,6 +12,7 @@ class Shrimp {
     //have shrimp follow the mouse
     update() {
         let mouse = createVector(mouseX, mouseY);
+
         //store new coordinates in a new vector variable
         this.acceleration = p5.Vector.sub(mouse, this.location);
         this.acceleration.setMag(0.4);
