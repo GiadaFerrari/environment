@@ -9,6 +9,7 @@ class Nemo {
         this.maxSpeed = 3;
         this.prevPos = this.loc.copy();
         this.rotation = 0;
+        this.froze = false;
 
     }
 
@@ -26,8 +27,6 @@ class Nemo {
     render() {
         push();
         imageMode(CENTER);
-
-        //  console.log(this.rotation);
 
         if (this.prevPos.x < this.loc.x) {
             this.rotate();
@@ -88,19 +87,24 @@ class Nemo {
     }
 
     applyForce(force) {
-        if (force == survivalInstinct) {
-            this.hidden = true;
-        }
         let f = p5.Vector.div(force, this.mass);
-        this.acc.add(f);
+        if (force == survivalInstinct && this.froze == false) {
+            this.hidden = true;
+            this.acc.add(f);
+        } else if (force != survivalInstinct) {
+            this.acc.add(f);
+
+        }
+
     }
 
-    //    hide(fear) {
-    //        let f = fear
-    //        this.acc.add(f);
-    //
-    //    }
 
+    freeze() {
+        console.log("I froze at " + this.loc)
+        this.froze = true;
+        this.acc.set(0, 0);
+        this.vel.set(0, 0);
+    }
 
 
 

@@ -8,7 +8,7 @@ let barracuda;
 
 
 //images
-let water, shrimpRender, shrimpRenderR, anemone, nemo, nemoL;
+let water, shrimpRender, shrimpRenderR, anemone, nemo, nemoL, barracu, barracuL;
 
 //number of creature
 let nemoNumber = 5;
@@ -26,6 +26,8 @@ function setup() {
     nemo = loadImage("assets/nemo.png")
     nemoL = loadImage("assets/nemoL.png")
     anemone = loadImage("assets/anemone.png")
+    barracu = loadImage("assets/barracuda.png")
+    barracuL = loadImage("assets/barracudaL.png")
 
     createCanvas(window.innerWidth, window.innerHeight);
 
@@ -80,8 +82,6 @@ function draw() {
     for (i = 0; i < clownFishes.length; i++) {
 
 
-        // current = createVector(cx, 0);
-
         survivalInstinct = createVector(2, 1.5)
 
         clownFishes[i].update();
@@ -110,4 +110,9 @@ function draw() {
 
     image(anemone, width - 250, height - 330, 350, 420)
 
+}
+
+
+function kill(arrayN, i) {
+    delete arrayN[i];
 }
