@@ -6,11 +6,12 @@ let seaWeeds = [];
 let barr = true;
 let barracuda;
 let anemones = [];
+let jellys = [];
 
 let nemoPos = [];
 
 //images
-let water, shrimpRender, shrimpRenderR, nemo, nemoL, barracu, barracuL;
+let water, shrimpRender, shrimpRenderR, nemo, nemoL, barracu, barracuL, jelly;
 let bckOffset = 0;
 let moveR = true;
 
@@ -18,6 +19,7 @@ let moveR = true;
 let nemoNumber = 5;
 let seaWeedNumber = 14;
 let anemN = 25;
+let jellyNumber = 5;
 
 //forces
 let current;
@@ -34,6 +36,8 @@ function setup() {
     nemoL = loadImage("assets/nemoL.png")
     barracu = loadImage("assets/barracuda.png")
     barracuL = loadImage("assets/barracudaL.png")
+    jelly = loadImage("assets/jelly.png")
+
 
     createCanvas(window.innerWidth, window.innerHeight);
 
@@ -52,6 +56,13 @@ function setup() {
     for (i = 0; i < nemoNumber; i++) {
         clownFishes[i] = new Nemo(random(width - 500, width - 100), random(height - 500, height - 100), random(15, 30), i);
 
+    }
+
+    //jellys
+
+    for (i = 0; i < jellyNumber; i++) {
+        jellys[i] = new Jelly(random(width / 2), random(height / 2), random(55, 60));
+        console.log("we have " + i)
     }
 
 
@@ -103,6 +114,17 @@ function draw() {
     shrimp.render();
     shrimp.update();
 
+    //jelly
+
+    for (i = 0; i < jellys.length; i++) {
+        jellys[i].update();
+        jellys[i].checkEdges();
+        jellys[i].render();
+
+        console.log("exist")
+
+    }
+
     //seaweed
 
     for (it = seaWeedNumber / 2; it < seaWeedNumber; it++) {
@@ -152,8 +174,11 @@ function draw() {
 
         clownFishes[i].aging();
 
-    }
 
+    }
+    if (clownFishes.length > 8) {
+        kill(clownFishes, floor(random(0, 7)))
+    }
     imageMode(CORNER);
 
 
@@ -172,4 +197,14 @@ function kill(arrayN, i) {
 function breed() {
     console.log("I ve been breeding")
     clownFishes.push(new Nemo(random(width - 500, width - 100), random(height - 500, height - 100), random(10, 15), clownFishes.length - 1));
+}
+
+function keyPressed() {
+
+    rise = createVector(-0.3, -2);
+    for (i = 0; i < jellys.length; i++) {
+        jellys[i].applyForce(rise);
+    }
+
+
 }

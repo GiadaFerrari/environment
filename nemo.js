@@ -48,7 +48,7 @@ class Nemo {
 
     aging() {
         this.age += 0.1;
-        if (this.age > 25 && this.age < 26 && this.offspring == 0) {
+        if (this.age > 25 && this.age < 26 && this.offspring < 2) {
             breed();
             this.offspring++;
 
