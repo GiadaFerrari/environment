@@ -4,11 +4,11 @@ class Barracuda {
         //add inverting direction?
         this.loc = createVector(-100, height / 3);
         this.vel = createVector(0, 0);
-        this.acc = createVector(random(10), 0);
+        this.acc = createVector(random(20), 0);
         this.mass = random(240, 230)
         this.maxSpeed = 1.5;
         this.huntRadar = createVector();
-        this.killShot = createVector(120, 70);
+        this.killShot = 200;
         this.prevPos = this.loc.copy();
 
         this.ate = 0;
@@ -59,33 +59,32 @@ class Barracuda {
     }
 
     hunt(nemoLoc, index) {
-        this.huntRadar = p5.Vector.sub(nemoLoc, this.loc)
-
-        if (this.huntRadar < this.killShot && this.loc.x < width - 250 && this.loc.x > 100 && this.ate < 1 && nemoLoc.y > height - 300) {
+        this.huntDistance = p5.Vector.dist(nemoLoc, this.loc)
+        // console.log(this.huntDistance)
+        if (this.huntDistance < this.killShot && this.loc.x < width - 250 && this.loc.x > 100 && this.ate < 1 && nemoLoc.y > height - 300) {
             this.ate++;
             clownFishes[index].freeze();
 
-
             console.log("i ate nemo number" + index + " he's at" + nemoLoc)
 
-            this.acc = p5.Vector.sub(clownFishes[index].loc, this.loc);
-            this.acc.setMag(0.5);
-            if (this.loc == clownFishes[index].loc) {
-                this.loc = clownFishes[index].loc
-                kill(clownFishes, index);
-                setTimeout(() => {
-                    this.ate = 0
-                }, 5000)
+            if (this.loc.dist(clownFishes[index].loc) > 50) {
+                console.log("i m swimming to my food")
+                this.acc = p5.Vector.sub(clownFishes[index].loc, this.loc);
+            } else {
+                console.log("i m swimming away")
             }
+
+            this.loc = clownFishes[index].loc
+            kill(clownFishes, index);
+            setTimeout(() => {
+                this.ate = 0
+            }, 5000)
+            this.acc.set(0.1, 0.5);
+            this.mass += 10;
+            //}
 
         }
     }
 
-    /*  //add hunt?
-      check x and y value of clownfishes[]. if barracuda.loc - clownfish[i].loc < 50
-      barracuda.loc = clownfish[i].loc
-      clownfish dies
-      barracuda gets bigger
-      */
 
 }

@@ -100,7 +100,6 @@ class Nemo {
 
 
     freeze() {
-        console.log("I froze at " + this.loc)
         this.froze = true;
         this.acc.set(0, 0);
         this.vel.set(0, 0);
