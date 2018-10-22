@@ -50,7 +50,7 @@ function setup() {
     }
     //nemos
     for (i = 0; i < nemoNumber; i++) {
-        clownFishes[i] = new Nemo(random(width - 500, width - 100), random(height - 500, height - 100), random(15, 30));
+        clownFishes[i] = new Nemo(random(width - 500, width - 100), random(height - 500, height - 100), random(15, 30), i);
 
     }
 
@@ -131,7 +131,6 @@ function draw() {
 
 
         survivalInstinct = createVector(2, 1.5)
-
         clownFishes[i].update();
 
         if (barracuda.loc.x < width / 2 + 100 || barracuda.loc.x > width + 50) {
@@ -148,45 +147,15 @@ function draw() {
             clownFishes[i].checkEdges(width, width - 400, height, height - 400);
 
         }
-
         clownFishes[i].render();
 
-        nemoPos[i] = clownFishes[i].loc
+
+        clownFishes[i].aging();
 
     }
 
     imageMode(CORNER);
 
-    for (i = 0; i < nemoPos.length - 1; i++) {
-
-        let locY = floor(nemoPos[i].y / 10);
-        locY = locY * 10
-
-        let locX = floor(nemoPos[i].x / 10);
-        locX = locX * 10
-
-
-        for (j = 0; j < nemoPos.length - 1; j++) {
-
-            let locYJ = floor(nemoPos[j].y / 10);
-            locYJ = locYJ * 10
-
-            let locXJ = floor(nemoPos[j].x / 10);
-            locXJ = locXJ * 10
-
-//            console.log(locX + " - " +
-              //                locXJ)
-              //
-              //            console.log(locXJ + " - " +
-              //                locYJ)
-
-
-            if (locX == locXJ && locY == locYJ) {
-                breed(clownFishes, Nemo);
-            }
-
-        }
-    }
 
     //anemone
 
@@ -197,10 +166,10 @@ function draw() {
 }
 
 function kill(arrayN, i) {
-    arrayN.splice(i)
-    console.log("element number" + i + "died")
+    arrayN.shift(i)
 }
 
-function breed(arrayN, obj) {
-    arrayN[arrayN.length] = new obj();
+function breed() {
+    console.log("I ve been breeding")
+    clownFishes.push(new Nemo(random(width - 500, width - 100), random(height - 500, height - 100), random(10, 15), clownFishes.length - 1));
 }

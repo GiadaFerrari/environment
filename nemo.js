@@ -1,5 +1,5 @@
 class Nemo {
-    constructor(x, y, m) {
+    constructor(x, y, m, index) {
         this.loc = createVector(x, y);
         this.vel = createVector(0, 0);
         this.acc = createVector(random(-1, 1), random());
@@ -10,6 +10,11 @@ class Nemo {
         this.prevPos = this.loc.copy();
         this.rotation = 0;
         this.froze = false;
+
+        this.age = random(0, 10);
+        this.offspring = 0;
+        this.index = index;
+        this.lifeExpectancy = random(20, 50)
 
     }
 
@@ -31,19 +36,32 @@ class Nemo {
         if (this.prevPos.x < this.loc.x) {
             this.rotate();
 
-            image(nemo, 0, 0, this.mass * 3, this.mass * 3)
+            image(nemo, 0, 0, this.mass * 3 + this.age, this.mass * 3 + this.age)
         } else {
             this.rotate();
 
-            image(nemoL, 0, 0, this.mass * 3, this.mass * 3)
+            image(nemoL, 0, 0, this.mass * 3 + this.age, this.mass * 3 + this.age)
         }
         pop();
 
     };
 
+    aging() {
+        this.age += 0.1;
+        if (this.age > 25 && this.age < 26 && this.offspring == 0) {
+            breed();
+            this.offspring++;
+
+            console.log(this.age)
+        }
+        if (this.age > this.lifeExpectancy) {
+            kill(clownFishes, this.index)
+            console.log(this.index);
+        }
+    }
+
     rotate() {
         push()
-
         translate(this.loc.x, this.loc.y)
         rotate(this.rotation);
 
@@ -104,6 +122,7 @@ class Nemo {
         this.acc.set(0, 0);
         this.vel.set(0, 0);
     }
+
 
 
 
